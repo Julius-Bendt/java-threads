@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -24,57 +25,53 @@ public class SharedFiFoQueue {
 
 	public void add(Integer person) throws InterruptedException {
 		lock.lock();
-		
-		
-
-		
-		if(queue[posW] == null)
-		{
+		if(queue[posW] == null){
 			System.out.println("Adding " + person);
 			queue[posW] = person;
 			posW = (posW + 1) % queue.length;
 			isSleeping.signal();
 		}
-		else
-		{
+		else{
 			System.out.println("Full - customer leaving (" + person + ")");
+			isQueueFullCondition.await();
 		}
-			
-
-
-
-		
+		printQueue("add");
 		lock.unlock();
 		
 	}
-
+//TODO write counter for succesrate
 	public Integer remove() throws InterruptedException {
 		lock.lock();
-		
-
-		
-		
+		printQueue("remove");
+		//System.out.println("posW: " + posW + "    posR: " + posR );
+	
 		Integer customer = queue[posR];
-
-		System.out.println("Barber finished cutting " + customer);
+		if (customer == null) {
+			System.out.println("Barber is now sleeping 1");
+			isSleeping.await();
 		
+		} else {
+		System.out.println("Barber finished cutting " + customer);
+		queue[posR] = null;
 		posR = (posR+1) % queue.length;
 		
 		isQueueFullCondition.signal();
-		
-		if (posW == posR)
-		{
-			System.out.println("Barber is now sleeping");
+		if (posW == posR){
+			System.out.println("Barber is now sleeping 2");
 			isSleeping.await();
 		}
 		
-		
-		
-		queue[posR] = null;
-		
 		lock.unlock();
 		
+		}
 		return customer;
 	}
-
+private void printQueue(String from) {
+	String print = "{ ";
+	for (Integer i : queue) {
+		print += i; 
+		print += ", ";
+	}
+	System.out.println( from + ": " +  print + " }");
+}
 }

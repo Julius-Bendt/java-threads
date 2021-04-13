@@ -4,25 +4,23 @@ public class Producer extends Thread {
 	
 	SharedFiFoQueue queue;
 	
-	final int MINTIME = 200;
-	final int MAXTIME = 300;
+	final int MINTIME = 50;
+	final int MAXTIME = 100;
 	
 	
-	public Producer(SharedFiFoQueue queue)
-	{
+	public Producer(SharedFiFoQueue queue){
 		this.queue = queue;
 	}
 	
 	
-	public void run()
-	{
+	@Override
+	public void run(){
 		Random rand = new Random();
 		int i = 0;
-		while(true)
+		while(i< 100)
 		{
 			i++;
-			if(rand.nextInt(100) > 50)
-			{
+			if(rand.nextInt(100) > 50){
 				try {
 					queue.add(i);
 				} catch (InterruptedException e) {
@@ -32,7 +30,6 @@ public class Producer extends Thread {
 			}
 			
 			try {
-				
 				Thread.sleep(rand.nextInt(MAXTIME - MINTIME + 1) + MINTIME); //Assume a customer comes into the shop every MINTIME and MAXTIME  ( in ms)
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

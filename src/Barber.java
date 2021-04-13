@@ -8,17 +8,14 @@ public class Barber extends Thread{ //BUt actually consumer
 	final int MINTIME = 100;
 	final int MAXTIME = 300;
 	
-	public Barber(SharedFiFoQueue queue)
-	{
+	public Barber(SharedFiFoQueue queue){
 		this.queue = queue;
 	}
 	
-	public void run()
-	{
+	public void run(){
 		Random rand = new Random();
 		try {
-			while(true)
-			{
+			while(true){
 				//Find next customer, and remove them from the queue
 				Thread.sleep(rand.nextInt(MAXTIME - MINTIME + 1) + MINTIME); //Assume a customer comes into the shop every MINTIME and MAXTIME  ( in ms)
 				
@@ -28,8 +25,7 @@ public class Barber extends Thread{ //BUt actually consumer
 				
 			}
 		}
-		catch (Exception e)
-		{
+		catch (Exception e){
 			
 		}
 		
