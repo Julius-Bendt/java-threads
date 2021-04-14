@@ -1,35 +1,27 @@
 import java.util.Random;
 
-public class Barber extends Thread{ //BUt actually consumer
-
+public class Barber extends Thread { // BUt actually consumer
 	SharedFiFoQueue queue = null;
-	
-	
 	final int MINTIME = 100;
 	final int MAXTIME = 300;
-	
-	public Barber(SharedFiFoQueue queue){
+
+	public Barber(SharedFiFoQueue queue) {
 		this.queue = queue;
 	}
-	
-	public void run(){
+
+	public void run() {
 		Random rand = new Random();
 		try {
-			while(true){
-				//Find next customer, and remove them from the queue
-				Thread.sleep(rand.nextInt(MAXTIME - MINTIME + 1) + MINTIME); //Assume a customer comes into the shop every MINTIME and MAXTIME  ( in ms)
-				
+			while (true) {
+				// Find next customer, and remove them from the queue
+				Thread.sleep(rand.nextInt(MAXTIME - MINTIME + 1) + MINTIME); // Assume a customer comes into the shop
+																				// every MINTIME and MAXTIME ( in ms)
+
 				Integer customer = queue.remove();
-				
-				
-				
 			}
+		} catch (Exception e) {
 		}
-		catch (Exception e){
-			
-		}
-		
-		
+
 		System.out.println("Barber done barbering");
 	}
 }
