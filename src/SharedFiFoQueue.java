@@ -5,8 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SharedFiFoQueue {
 	private Integer[] queue = null;
 
-	private int posW = 0;
-	private int posR = 0;
+	private int posW = 0; //Write position
+	private int posR = 0; //Read position
 
 	private Lock lock = new ReentrantLock();
 	private Condition isSleeping = lock.newCondition();

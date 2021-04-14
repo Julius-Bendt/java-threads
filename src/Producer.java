@@ -20,7 +20,7 @@ public class Producer extends Thread {
 			
 			if (rand.nextInt(100) < CHANCEFORCUSTOMER) {
 				try {
-					i++;
+					i++; //Used for identifying customers - purely for tui.
 					queue.add(i);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
