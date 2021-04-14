@@ -5,23 +5,19 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SharedFiFoQueue {
 	private Integer[] queue = null;
 
-	public int success = 0;
-	public int fails = 0;
-	private int runFor;
-
 	private int posW = 0;
 	private int posR = 0;
 
 	private Lock lock = new ReentrantLock();
 	private Condition isSleeping = lock.newCondition();
 
+
 	public int getQueueLength() {
 		return queue.length;
 	}
 
-	public SharedFiFoQueue(int size, int runFor) {
+	public SharedFiFoQueue(int size) {
 		queue = new Integer[size];
-		this.runFor = runFor;
 	}
 
 	public void add(Integer person) throws InterruptedException {
@@ -33,7 +29,7 @@ public class SharedFiFoQueue {
 			isSleeping.signal();
 		} else {
 			System.out.println("Full - customer leaving (" + person + ")");
-			fails++;
+
 		}
 		printQueue("add");
 		lock.unlock();
@@ -41,32 +37,27 @@ public class SharedFiFoQueue {
 
 	public Integer remove() throws InterruptedException {
 		Integer customer = queue[posR];
-		if ((success + fails) <= runFor) {
-
-
+		
 			lock.lock();
-
 			if (customer == null) {
 				System.out.println("Barber is now sleeping 1");
 				isSleeping.await();
-
 			} else {
+
 				System.out.println("Barber finished cutting " + customer);
 				queue[posR] = null;
 				posR = (posR + 1) % queue.length;
-				success++;
-
 				if (posW == posR) {
 					System.out.println("Barber is now sleeping 2");
 					isSleeping.await();
+
 				}
 				printQueue("remove");
 				lock.unlock();
 			}
 
-		}
 		
-		
+
 		return customer;
 	}
 

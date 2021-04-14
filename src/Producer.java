@@ -2,21 +2,23 @@ import java.util.Random;
 
 public class Producer extends Thread {
 	SharedFiFoQueue queue;
-	final int MINTIME = 50;
-	final int MAXTIME = 100;
+	final int MINTIME = 250;
+	final int MAXTIME = 500;
+	final int CHANCEFORCUSTOMER = 75;
+	int runFor;
 
 
 	public Producer(SharedFiFoQueue queue) {
 		this.queue = queue;
-
 	}
 
 	@Override
 	public void run() {
 		Random rand = new Random();
 		int i = 0;
-		while (i < 30) {
-			if (rand.nextInt(100) > 50) {
+		while (true) { 
+			
+			if (rand.nextInt(100) < CHANCEFORCUSTOMER) {
 				try {
 					i++;
 					queue.add(i);
