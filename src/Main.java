@@ -12,6 +12,7 @@ public class Main {
 
 		producer.join();
 		consumer.join();
+		System.out.println(queue.success);
 		System.out.println("Terminated");
 	}
 

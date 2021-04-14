@@ -5,6 +5,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SharedFiFoQueue {
 	private Integer[] queue = null;
 
+	public int success = 0;
+	public int fails = 0;
+
 	private int posW = 0;
 	private int posR = 0;
 
@@ -29,6 +32,7 @@ public class SharedFiFoQueue {
 			isSleeping.signal();
 		} else {
 			System.out.println("Full - customer leaving (" + person + ")");
+			fails++;
 			isQueueFullCondition.await();
 		}
 		printQueue("add");
@@ -58,6 +62,7 @@ public class SharedFiFoQueue {
 			}
 
 			printQueue("remove");
+			success++;
 			lock.unlock();
 
 		}
