@@ -42,7 +42,6 @@ public class SharedFiFoQueue {
 //TODO write counter for succesrate
 	public Integer remove() throws InterruptedException {
 		lock.lock();
-		printQueue("remove");
 		//System.out.println("posW: " + posW + "    posR: " + posR );
 	
 		Integer customer = queue[posR];
@@ -61,6 +60,7 @@ public class SharedFiFoQueue {
 			isSleeping.await();
 		}
 		
+		printQueue("remove");
 		lock.unlock();
 		
 		}

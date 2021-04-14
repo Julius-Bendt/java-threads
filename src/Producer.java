@@ -17,11 +17,11 @@ public class Producer extends Thread {
 	public void run(){
 		Random rand = new Random();
 		int i = 0;
-		while(i< 100)
+		while(i< 30)
 		{
-			i++;
 			if(rand.nextInt(100) > 50){
 				try {
+					i++;
 					queue.add(i);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
