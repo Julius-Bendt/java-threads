@@ -5,8 +5,10 @@ public class Producer extends Thread {
 	final int MINTIME = 50;
 	final int MAXTIME = 100;
 
+
 	public Producer(SharedFiFoQueue queue) {
 		this.queue = queue;
+
 	}
 
 	@Override

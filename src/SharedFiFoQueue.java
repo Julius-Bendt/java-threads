@@ -7,20 +7,21 @@ public class SharedFiFoQueue {
 
 	public int success = 0;
 	public int fails = 0;
+	private int runFor;
 
 	private int posW = 0;
 	private int posR = 0;
 
 	private Lock lock = new ReentrantLock();
 	private Condition isSleeping = lock.newCondition();
-	private Condition isQueueFullCondition = lock.newCondition();
 
 	public int getQueueLength() {
 		return queue.length;
 	}
 
-	public SharedFiFoQueue(int size) {
+	public SharedFiFoQueue(int size, int runFor) {
 		queue = new Integer[size];
+		this.runFor = runFor;
 	}
 
 	public void add(Integer person) throws InterruptedException {
@@ -33,47 +34,46 @@ public class SharedFiFoQueue {
 		} else {
 			System.out.println("Full - customer leaving (" + person + ")");
 			fails++;
-			isQueueFullCondition.await();
 		}
 		printQueue("add");
 		lock.unlock();
-
 	}
 
-//TODO write counter for succesrate
 	public Integer remove() throws InterruptedException {
-		lock.lock();
-		// System.out.println("posW: " + posW + " posR: " + posR );
-
 		Integer customer = queue[posR];
-		if (customer == null) {
-			System.out.println("Barber is now sleeping 1");
-			isSleeping.await();
+		if ((success + fails) <= runFor) {
 
-		} else {
-			System.out.println("Barber finished cutting " + customer);
-			queue[posR] = null;
-			posR = (posR + 1) % queue.length;
 
-			isQueueFullCondition.signal();
-			if (posW == posR) {
-				System.out.println("Barber is now sleeping 2");
+			lock.lock();
+
+			if (customer == null) {
+				System.out.println("Barber is now sleeping 1");
 				isSleeping.await();
+
+			} else {
+				System.out.println("Barber finished cutting " + customer);
+				queue[posR] = null;
+				posR = (posR + 1) % queue.length;
+				success++;
+
+				if (posW == posR) {
+					System.out.println("Barber is now sleeping 2");
+					isSleeping.await();
+				}
+				printQueue("remove");
+				lock.unlock();
 			}
 
-			printQueue("remove");
-			success++;
-			lock.unlock();
-
 		}
+		
+		
 		return customer;
 	}
 
 	private void printQueue(String from) {
 		String print = "{ ";
 		for (Integer i : queue) {
-			print += i;
-			print += ", ";
+			print += i + ", ";
 		}
 		System.out.println(from + ": " + print + " }");
 	}
