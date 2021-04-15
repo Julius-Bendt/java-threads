@@ -18,9 +18,9 @@ public class Consumer extends Thread {
 
 				Integer person = shop.remove(this.name);
 				shop.succes++;
-				System.out.println(this.name + " finished cutting: " + person);
-				if (!shop.open)
+				if (person == null)
 					break;
+				System.out.println(this.name + " finished cutting: " + person);
 				Thread.sleep(random.nextInt(MAXTIME - MINTIME + 1) + MINTIME);
 			}
 		} catch (InterruptedException e) {
