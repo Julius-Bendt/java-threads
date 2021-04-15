@@ -1,3 +1,4 @@
+package barbershop;
 import java.util.Random;
 
 public class Producer extends Thread {

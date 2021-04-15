@@ -1,3 +1,4 @@
+package barbershop;
 import java.util.Random;
 
 public class Consumer extends Thread {
@@ -15,12 +16,13 @@ public class Consumer extends Thread {
 	public void run() {
 		try {
 			while (true) {
-
 				Integer person = shop.remove(this.name);
-				shop.succes++;
 				if (person == null)
 					break;
+
+				shop.succes++;
 				System.out.println(this.name + " finished cutting: " + person);
+
 				Thread.sleep(random.nextInt(MAXTIME - MINTIME + 1) + MINTIME);
 			}
 		} catch (InterruptedException e) {
