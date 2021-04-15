@@ -1,8 +1,8 @@
 import java.util.Random;
 
 public class Producer extends Thread {
-	final int MINTIME = 300;
-	final int MAXTIME = 550;
+	final int MINTIME = 100;
+	final int MAXTIME = 150;
 	private Shop shop;
 	private Random random = new Random();
 	private int runs;

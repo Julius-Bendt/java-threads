@@ -21,6 +21,6 @@ public class Main {
 //		barber4.join();
 		costumer.join();
 		int fails = runs - shop.succes;
-		System.out.println(shop.succes + "/" + fails);
+		System.out.println("Succes/Fails: " + shop.succes + "/" + fails);
 	}
 }
