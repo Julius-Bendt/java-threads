@@ -1,40 +1,31 @@
 import java.util.Random;
 
 public class Producer extends Thread {
-	SharedFiFoQueue queue;
-	final int MINTIME = 250;
-	final int MAXTIME = 500;
-	final int CHANCEFORCUSTOMER = 75;
-	int runFor;
+	final int MINTIME = 300;
+	final int MAXTIME = 550;
+	private Shop shop;
+	private Random random = new Random();
+	private int runs;
 
-
-	public Producer(SharedFiFoQueue queue) {
-		this.queue = queue;
+	public Producer(Shop shop, int runs) {
+		this.shop = shop;
+		this.runs = runs;
 	}
 
-	@Override
 	public void run() {
-		Random rand = new Random();
 		int i = 0;
-		while (true) { 
-			
-			if (rand.nextInt(100) < CHANCEFORCUSTOMER) {
-				try {
-					i++; //Used for identifying customers - purely for tui.
-					queue.add(i);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
+		while (i < runs) {
+			shop.add(i);
+			i++;
 			try {
-				Thread.sleep(rand.nextInt(MAXTIME - MINTIME + 1) + MINTIME); // Assume a customer comes into the shop
-																				// every MINTIME and MAXTIME ( in ms)
+				Thread.sleep(random.nextInt(MAXTIME - MINTIME + 1) + MINTIME);
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+
+		shop.open = false;
 
 	}
 }

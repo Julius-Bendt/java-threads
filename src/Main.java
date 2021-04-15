@@ -1,17 +1,26 @@
 
 public class Main {
-
 	public static void main(String[] args) throws InterruptedException {
-		SharedFiFoQueue queue = new SharedFiFoQueue(5); // Max queue size
+		int runs = 10;
+		Shop shop = new Shop();
+		Consumer barber = new Consumer(shop, "Karsten");
+//		Consumer barber2 = new Consumer(shop, "Istvan");
+//		Consumer barber3 = new Consumer(shop, "Istvan2");
+//		Consumer barber4 = new Consumer(shop, "Istvan3");
+		Producer costumer = new Producer(shop, runs);
 
-		Producer producer = new Producer(queue);
-		Barber consumer = new Barber(queue);
+		barber.start();
+//		barber2.start();
+//		barber3.start();
+//		barber4.start();
+		costumer.start();
 
-		producer.start();
-		consumer.start();
-
-		producer.join();
-		consumer.join();
+		barber.join();
+//		barber2.join();
+//		barber3.join();
+//		barber4.join();
+		costumer.join();
+		int fails = runs - shop.succes;
+		System.out.println(shop.succes + "/" + fails);
 	}
-
 }
