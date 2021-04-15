@@ -15,8 +15,8 @@ public class Elves extends Thread {
 	}
 
 	public void run() {
-		int i = 0;
-		while (i < elves) {
+		int i = 1;
+		while (i < elves + 1) {
 			System.out.println("Elf: " + i);
 			shop.addElf(i);
 			i++;

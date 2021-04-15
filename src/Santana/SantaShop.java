@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SantaShop {
-	private ArrayList<Integer> deers;
+	private ArrayList<String> deers;
 	private Queue<Integer> elves;
 	private Lock lock = new ReentrantLock();
 	private Condition sleep = lock.newCondition();
@@ -26,7 +26,7 @@ public class SantaShop {
 		lock.unlock();
 	}
 
-	public void arrive(Integer deer) {
+	public void arrive(String deer) {
 		lock.lock();
 		deers.add(deer);
 		if (deers.size() > 8)
