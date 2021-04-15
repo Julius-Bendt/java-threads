@@ -17,11 +17,10 @@ public class Consumer extends Thread {
 			while (true) {
 
 				Integer person = shop.remove(this.name);
-				if (person == null) {
-					break;
-				}
 				shop.succes++;
 				System.out.println(this.name + " finished cutting: " + person);
+				if (!shop.open)
+					break;
 				Thread.sleep(random.nextInt(MAXTIME - MINTIME + 1) + MINTIME);
 			}
 		} catch (InterruptedException e) {
